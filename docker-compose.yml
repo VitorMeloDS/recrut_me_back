@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel_app
+        restart: unless-stopped
+        working_dir: /var/www
+        env_file: .env
+        volumes:
+            - .:/var/www
+        ports:
+            - "8000:8000"
+        # environment:
+        #     APP_ENV: local
+        #     APP_KEY: base64:random_key
+        #     APP_DEBUG: "true"
+        #     APP_URL: http://localhost
+        #     DB_CONNECTION: pgsql
+        #     DB_HOST: postgres
+        #     DB_PORT: 5432
+        #     DB_DATABASE: recrut_me_back
+        #     DB_USERNAME: postgres
+        #     DB_PASSWORD: secret
+
+    postgres:
+        image: postgres:15
+        container_name: laravel_postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: recrut_me_back
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: secret
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+
+volumes:
+    pgdata:
