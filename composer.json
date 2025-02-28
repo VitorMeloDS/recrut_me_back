@@ -13,7 +13,9 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
-        "lucascudo/laravel-pt-br-localization": "^3.0"
+        "laravellegends/pt-br-validator": "^12.0",
+        "lucascudo/laravel-pt-br-localization": "^3.0",
+        "respect/validation": "^2.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

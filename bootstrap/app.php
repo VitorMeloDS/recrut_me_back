@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Middleware\NotFoundMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use App\Http\Middleware\SanctumAuthMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,13 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // [
-        //     EnsureFrontendRequestsAreStateful::class,
-        //     'throttle:api',
-        //     \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        //     \App\Http\Middleware\NotFoundMiddleware::class,
-        // ];
+        $middleware->append([
+            NotFoundMiddleware::class,
+            EnsureFrontendRequestsAreStateful::class,
+        ]);
+
+        $middleware->alias([
+            'auth.sanctum.custom' => SanctumAuthMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })->create();
