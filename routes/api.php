@@ -10,11 +10,14 @@ use App\Http\Controllers\RegisterController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
+Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/cep/{cep}', [RegisterController::class, 'getAddressByCep']);
+Route::get('/invite/verify-token', [InviteController::class, 'verifyToken']);
 
 Route::middleware(['auth.sanctum.custom'])->group(function () {
     Route::post('/user', [AuthController::class, 'createUser']);
-    Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
     Route::get('/is-auth', [AuthController::class, 'isAuth']);
 
 
@@ -29,13 +32,8 @@ Route::middleware(['auth.sanctum.custom'])->group(function () {
     Route::get('/invite', [InviteController::class, 'index']);
     Route::post('/invite', [InviteController::class, 'sendEmail']);
 
-    Route::post('/register', [RegisterController::class, 'register']);
-    Route::get('/cep/{cep}', [RegisterController::class, 'getAddressByCep']);
-
-    Route::get('/employees', [EmployeeController::class, 'index']);
-    Route::get('/employees/{id}', [EmployeeController::class, 'show']);
-    Route::put('/employees/{id}/profile', [EmployeeController::class, 'updateProfile']);
-    Route::get('/employees/export', [EmployeeController::class, 'exportToExcel']);
+    Route::get('/employee', [EmployeeController::class, 'index']);
+    Route::get('/employee/export', [EmployeeController::class, 'exportToExcel']);
+    Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+    Route::put('/employee/{id}/profile', [EmployeeController::class, 'updateProfile']);
 });
-
-Route::get('/verify-token', [InviteController::class, 'verifyToken']);

@@ -6,7 +6,7 @@ use App\Models\Employee;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class EmployeesExport implements FromCollection, WithHeadings {
+class EmployeesExports implements FromCollection, WithHeadings {
     protected $search;
 
     public function __construct($search = null) {
@@ -24,7 +24,7 @@ class EmployeesExport implements FromCollection, WithHeadings {
             });
         }
 
-        return $query->select('name', 'email', 'cpf', 'phone', 'cep', 'uf', 'city', 'neighborhood', 'street')->get();
+        return $query->select('name', 'email', 'cpf', 'phone', 'cep', 'uf', 'locality', 'neighborhood', 'street')->get();
     }
 
     public function headings(): array {

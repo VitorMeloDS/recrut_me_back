@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('id_profile')->nullable()->constrained('profile')->index();
             $table->string('cpf')->unique();
             $table->timestamp('cpf_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->boolean('disabled')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('employee', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->nullable()->constrained('users')->index();
-            $table->string('nome', 100);
+            $table->string('name', 100);
             $table->string('cpf', 14);
             $table->string('email');
             $table->string('cep', 9);

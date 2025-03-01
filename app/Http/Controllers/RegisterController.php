@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Http;
 class RegisterController extends Controller {
     public function register(Request $request) {
         $request->validate([
-            'token' => 'required|exists:invites,token',
+            'token' => 'required|exists:invite,token',
             'name' => 'required|string|max:100',
-            'cpf' => ['required', 'string', 'size:14', 'regex:/^\d{3}\.\d{3}\.\d{3}-\d{2}$/', 'unique:employees,cpf'],
-            'phone' => ['nullable', 'string', 'regex:/^\(\d{2}\) \d{5}-\d{4}$/'],
-            'cep' => ['required', 'string', 'size:9', 'regex:/^\d{5}-\d{3}$/'],
+            'cpf' => ['required', 'string', 'size:11', 'cpf', 'unique:employee,cpf'],
+            'phone' => ['nullable', 'string'],
+            'cep' => ['required', 'string', 'size:8'],
             'uf' => 'required|string|size:2',
             'city' => 'required|string|max:30',
             'neighborhood' => 'required|string|max:40',
@@ -28,24 +28,23 @@ class RegisterController extends Controller {
             return response()->json(['error' => 'Token inválido ou expirado.'], 400);
         }
 
-        $employee = Employee::create([
+        $user = User::create([
+            'name' => $request->name,
+            'cpf' => $request->cpf,
+            'email' => $invite->email,
+        ]);
+
+        Employee::create([
+            'id_user' => $user->id,
             'name' => $request->name,
             'email' => $invite->email,
             'cpf' => $request->cpf,
             'phone' => $request->phone,
             'cep' => $request->cep,
             'uf' => $request->uf,
-            'city' => $request->city,
+            'locality' => $request->city,
             'neighborhood' => $request->neighborhood,
             'street' => $request->street
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $invite->email,
-            'employee_id' => $employee->id,
-            'id_profile' => 3,
-            'password' => null,
         ]);
 
         $invite->update(['status' => 'Finalizado']);

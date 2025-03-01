@@ -12,7 +12,7 @@ class NotFoundMiddleware
     {
         $response = $next($request);
 
-        if ($response->status() == 404) {
+        if ($response->getStatusCode() == 404) {
             return response()->json([
                 'error' => 'Rota não encontrada.',
                 'status' => 404

@@ -31,22 +31,34 @@ class InviteController extends Controller
     public function sendEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:invites,email',
+            'email' => 'required|email',
         ]);
 
         $token = Str::random(40);
         $expiresAt = Carbon::now()->addHours(24);
 
-        Invite::create([
-            'email' => $request->email,
-            'token' => $token,
-            'status' => 'Em Aberto',
-            'expires_at' => $expiresAt,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $existInvite = Invite::where('email', $request->email)->where('status', '<>', "%Finalizado%")->exists();
 
-        $link = env('APP_URL') . "/api/registro?token=$token";
+        if ($existInvite) {
+            Invite::where('email', $request->email)->update([
+                'token' => $token,
+                'status' => 'Em Aberto',
+                'expires_at' => $expiresAt,
+                'updated_at' => now(),
+            ]);
+        } else {
+            Invite::create([
+                'email' => $request->email,
+                'token' => $token,
+                'status' => 'Em Aberto',
+                'expires_at' => $expiresAt,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+
+        $link = env('APP_URL') . "/colaborador/criar?token=$token";
 
         Mail::to($request->email)->send(new InviteMail($request->email, $link));
 
@@ -57,16 +69,16 @@ class InviteController extends Controller
     {
         $token = $request->query('token');
 
-        $invite = DB::table('invites')->where('token', $token)->first();
+        $invite = DB::table('invite')->where('token', $token)->first();
 
         if (!$invite) {
             return response()->json(['error' => 'Token inválido'], 400);
         }
 
         if (Carbon::now()->greaterThan($invite->expires_at)) {
-            return response()->json(['error' => 'Token expirado'], 400);
+            return response()->json(['error' => 'Token expirado', 'valid' => false, ], 400);
         }
 
-        return response()->json(['message' => 'Token válido', 'email' => $invite->email]);
+        return response()->json(['message' => 'Token válido', 'valid' => true, 'email' => $invite->email]);
     }
 }

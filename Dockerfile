@@ -6,8 +6,13 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev \
     netcat-openbsd \
-    && docker-php-ext-install pdo pdo_pgsql \
-    && gd
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql gd zip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

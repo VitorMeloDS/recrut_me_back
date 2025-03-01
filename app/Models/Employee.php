@@ -17,6 +17,11 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function invite()
+    {
+        return $this->hasOne(Invite::class, 'email', 'email');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +29,7 @@ class Employee extends Model
      */
     protected $fillable = [
         'id_user',
-        'nome',
+        'name',
         'cpf',
         'email',
         'cep',

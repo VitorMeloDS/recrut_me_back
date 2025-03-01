@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\EmployeesExport;
+use App\Exports\EmployeesExports;
 
 class EmployeeController extends Controller {
     public function index(Request $request) {
@@ -57,6 +57,6 @@ class EmployeeController extends Controller {
     }
 
     public function exportToExcel(Request $request) {
-        return Excel::download(new EmployeesExport($request->search), 'colaboradores.xlsx');
+        return Excel::download(new EmployeesExports($request->search), 'colaboradores.xlsx');
     }
 }

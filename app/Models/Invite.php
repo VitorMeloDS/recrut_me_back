@@ -11,6 +11,11 @@ class Invite extends Model {
 
     protected $table = 'invite';
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'email', 'email');
+    }
+
     protected $fillable = ['email', 'token', 'status', 'expires_at'];
 
     public function isExpired() {

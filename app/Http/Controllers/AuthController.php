@@ -48,7 +48,10 @@ class AuthController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = User::where('cpf', $request->cpf)->first();
+        $user = User::where('cpf', $request->cpf)
+            ->where('password', '<>', null)
+            ->where('disabled', '<>', true)
+            ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
