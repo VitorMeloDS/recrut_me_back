@@ -13,6 +13,10 @@ class Employee extends Model
 
     protected $table = 'employee';
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

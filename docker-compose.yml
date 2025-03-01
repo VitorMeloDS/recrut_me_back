@@ -30,23 +30,11 @@ services:
         volumes:
             - pgdata:/var/lib/postgresql/data
 
-    rabbitmq:
-        image: "rabbitmq:management"
+    mailhog:
+        image: mailhog/mailhog
         ports:
-            - "5672:5672"
-            - "15672:15672"
-        environment:
-        RABBITMQ_DEFAULT_USER: user
-        RABBITMQ_DEFAULT_PASS: password
-        volumes:
-            - rabbitmq-data:/var/lib/rabbitmq
-        networks:
-            - app-network
-
-networks:
-    app-network:
-        driver: bridge
+            - 1025:1025
+            - 8025:8025
 
 volumes:
     pgdata:
-    rabbitmq-data:

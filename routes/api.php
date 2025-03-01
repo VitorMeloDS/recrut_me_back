@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
@@ -23,4 +25,17 @@ Route::middleware(['auth.sanctum.custom'])->group(function () {
     Route::delete('/profile/{id}', [ProfileController::class, 'destroy']);
 
     Route::get('/menu', [MenuController::class, 'index']);
+
+    Route::get('/invite', [InviteController::class, 'index']);
+    Route::post('/invite', [InviteController::class, 'sendEmail']);
+
+    Route::post('/register', [RegisterController::class, 'register']);
+    Route::get('/cep/{cep}', [RegisterController::class, 'getAddressByCep']);
+
+    Route::get('/employees', [EmployeeController::class, 'index']);
+    Route::get('/employees/{id}', [EmployeeController::class, 'show']);
+    Route::put('/employees/{id}/profile', [EmployeeController::class, 'updateProfile']);
+    Route::get('/employees/export', [EmployeeController::class, 'exportToExcel']);
 });
+
+Route::get('/verify-token', [InviteController::class, 'verifyToken']);
