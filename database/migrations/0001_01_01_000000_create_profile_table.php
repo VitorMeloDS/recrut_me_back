@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('profile', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->boolean('employee');
-            $table->boolean('profile');
-            $table->boolean('invite');
             $table->timestamps();
         });
     }

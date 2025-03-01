@@ -2,11 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,17 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if (User::count() == 0) {
-            User::factory()->create([
-                'cpf' => env('APP_USER_CPF_DEFAUL', 70123776074),
-                'password' => Hash::make(env('APP_USER_PASS_DEFAULT', 'u6NQ#01t')),
-                'cpf_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        } else {
-            echo "🚀 Seed já existe, pulando...\n";
-        }
+        $this->call([
+            ProfileSeeder::class,
+            UserSeeder::class,
+            MenuSeeder::class,
+            MenuProfileSeeder::class,
+        ]);
     }
 }

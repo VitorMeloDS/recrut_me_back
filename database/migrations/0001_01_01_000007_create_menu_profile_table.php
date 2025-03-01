@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menu_profile', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        $table->unsignedBigInteger('id_menu');
+        $table->unsignedBigInteger('id_profile');
+        $table->timestamps();
+
+        $table->foreign('id_menu')->references('id')->on('menu')->onDelete('cascade');
+        $table->foreign('id_profile')->references('id')->on('profile')->onDelete('cascade');
+
+        $table->primary(['id_menu', 'id_profile']);
         });
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_profile')->nullable()->constrained('profile')->index();
             $table->string('cpf')->unique();
             $table->timestamp('cpf_verified_at')->nullable();
             $table->string('password');
