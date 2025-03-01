@@ -10,7 +10,6 @@ if [ "$DB_CONNECTION" = "pgsql" ]; then
     echo "Postgres started"
 fi
 
-php artisan migrate
-php artisan db:seed
+php artisan migrate && php artisan db:seed
 
 exec "$@"
