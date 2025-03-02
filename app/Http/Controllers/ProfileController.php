@@ -99,19 +99,14 @@ class ProfileController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        // Atualizar o nome do perfil
+        // Atualiza o nome
         $profile->update(['name' => $request->name]);
 
-        // Remover menus antigos
-        $profile->menus()->delete(['id_profile' => $id]);
+        // Remove os menus antigos
+        $profile->menus()->detach();
 
-        // Adicionar os novos menus
-        foreach ($request->menus as $menuId) {
-            MenuProfile::create([
-                'id_menu' => $menuId,
-                'id_profile' => $profile->id,
-            ]);
-        }
+        // Adiciona os novos menus
+        $profile->menus()->attach($request->menus);
 
         // Retornar resposta de sucesso
         return response()->json(['data' => 'Perfil atualizado com sucesso!'], Response::HTTP_OK);
