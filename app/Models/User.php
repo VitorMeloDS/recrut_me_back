@@ -14,11 +14,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public function employee() {
-        return $this->hasOne(Employee::class);
+        return $this->hasOne(Employee::class, 'id_user');
     }
 
     public function profile() {
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class, 'id', 'id_profile');
     }
 
     /**

@@ -16,6 +16,8 @@ services:
             - "8000:8000"
         depends_on:
             - postgres
+        networks:
+            - app_network
 
     postgres:
         image: postgres:15
@@ -29,12 +31,20 @@ services:
             - "5432:5432"
         volumes:
             - pgdata:/var/lib/postgresql/data
+        networks:
+            - app_network
 
     mailhog:
         image: mailhog/mailhog
         ports:
             - 1025:1025
             - 8025:8025
+        networks:
+            - app_network
 
 volumes:
     pgdata:
+
+networks:
+    app_network:
+        driver: bridge

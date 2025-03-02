@@ -15,7 +15,11 @@ class Profile extends Model
 
     public function menus()
     {
-        return $this->belongsToMany(Menu::class, 'menu_profile', 'id_profile', 'id_menu');
+        return $this->belongsToMany(Menu::class, 'menu_profile', 'id_profile', 'id_menu')->orderBy('id_menu');
+    }
+
+    public function user() {
+        return $this->hasOne(User::class, 'id_profile', 'id');
     }
 
     /**

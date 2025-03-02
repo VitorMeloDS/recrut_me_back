@@ -32,6 +32,7 @@ class RegisterController extends Controller {
             'name' => $request->name,
             'cpf' => $request->cpf,
             'email' => $invite->email,
+            'disabled' => true
         ]);
 
         Employee::create([

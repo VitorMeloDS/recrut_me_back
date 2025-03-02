@@ -12,11 +12,6 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function createUser(Request $request)
-    {
-        return response()->json(['Method not implemented']);
-    }
-
     public function login(Request $request)
     {
         $rules = [
@@ -48,9 +43,18 @@ class AuthController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $userIsDisabled = User::where('cpf', $request->cpf)->where('disabled', '=', true)->first();
+
+        if ($userIsDisabled?->cpf) {
+            return response()->json([
+                'error' => 'Usuário desabilitado!',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user = User::where('cpf', $request->cpf)
             ->where('password', '<>', null)
             ->where('disabled', '<>', true)
+            ->whereHas('employee')
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -104,7 +108,13 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = User::where('id', $request->user()->id)
+        ->with('employee')
+        ->with('profile')
+        ->with('profile.menus')
+        ->first();
+
+        return response()->json($user);
     }
 
     public function isAuth() {

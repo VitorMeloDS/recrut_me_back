@@ -14,9 +14,9 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         $registers = [
-            [ 'name' => 'Colaboradores' ],
-            [ 'name' => 'Convite' ],
-            [ 'name' => 'Perfil' ],
+            [ 'name' => 'Colaboradores', 'link' => '/painel', 'icon' => 'people' ],
+            [ 'name' => 'Convite', 'link' => '/convite', 'icon' => 'person_add' ],
+            [ 'name' => 'Perfil', 'link' => '/perfil', 'icon' => 'person' ],
         ];
 
         if (Menu::count() == 0) {
